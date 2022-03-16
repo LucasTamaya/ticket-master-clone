@@ -10,13 +10,15 @@ const SearchBar = () => {
   const [date, setDate] = useState("");
   const [keyword, setKeyword] = useState("");
 
-  const validDate = Date.parse("2022-05-01");
-  console.log(validDate);
+  //   const validDate = Date.parse("2022-05-01");
+  //   console.log(validDate);
+
+  // va contenir le ou les paramètres
+  let parameter;
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let url;
     // si input nécessaire vide
     if (location === "" && keyword === "") {
       return;
@@ -29,8 +31,6 @@ const SearchBar = () => {
 
     // si input location remplie uniquement
     if (!location !== "" && date === "" && keyword === "") {
-      let parameter;
-
       // si la location est un nombre
       if (!isNaN(location)) {
         parameter = `postalCode=${location}`;
@@ -48,21 +48,20 @@ const SearchBar = () => {
           }`; //met la première lettre en majuscule et les autres en minuscules
         }
       }
-      //   url final afin de fetch la data
-      url = `${start}${parameter}${apiKey}`;
-      console.log(url);
     }
+    // si input keyword remplie uniquement
+    if (keyword !== "" && location === "" && date === "") {
+      parameter = `keyword=${keyword}`;
+    }
+
+    // crée l'url final
+    const url = `${start}${parameter}${apiKey}`;
+
+    // récupère la data avec un hook perso
+    useAxios(url).then((data) => {
+      console.log(data);
+    });
   };
-
-  //   useAxios(
-  //     `https://app.ticketmaster.com/discovery/v2/events.json?localStartDateTime=${validDate}&apikey=unneSX7dAziD3KV7lGvGKYymTAOCxdju`
-  //   ).then((data) => {
-  //     console.log(data);
-  //   });
-
-  //   url city example: https://app.ticketmaster.com/discovery/v2/events.json?city=London&apikey=unneSX7dAziD3KV7lGvGKYymTAOCxdju
-  // url keywords example: https://app.ticketmaster.com/discovery/v2/events.json?keyword=Ninho&apikey=unneSX7dAziD3KV7lGvGKYymTAOCxdju
-  //   url postal code example: https://app.ticketmaster.com/discovery/v2/events.json?postalCode=75000&apikey=unneSX7dAziD3KV7lGvGKYymTAOCxdju
 
   return (
     <form
