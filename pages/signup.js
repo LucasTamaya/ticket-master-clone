@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import Link from "next/link";
 import signupValidation from "../YupValidationSchema/signupValidation";
 import { Controller, useForm } from "react-hook-form";
@@ -7,8 +8,13 @@ import axios from "axios";
 import template from "../utils/template";
 import AuthBanner from "../components/AuthBanner";
 import CountrySelection from "../components/CountrySelection";
+import { useRouter } from "next/router";
+import AuthLoading from "../components/AuthLoading";
 
 export default function SignUp() {
+  const [loading, setLoading] = useState(false);
+  const [authErrorMessage, setAuthErrorMessage] = useState("");
+
   // gère les erreur des notre formulaire
   const {
     control,
@@ -20,6 +26,8 @@ export default function SignUp() {
 
   // fonction qui envoit la data au backend
   const handleSignup = async (input) => {
+    // active l'animation de loading
+    setLoading(true);
     const newUserData = {
       email: input.email,
       password: input.password,
@@ -29,12 +37,23 @@ export default function SignUp() {
       zip: input.zip,
     };
     const req = await axios.post(`${template}api/signup`, newUserData);
+
+    if (req.data.status === "Error") {
+      alert("something went wrong");
+      // désactive l'animation de loading à la réception de l'erreur
+      setLoading(false);
+    }
+
+    if (req.data.status === "Success") {
+      // désactive l'animation de loading à la réception de la data
+      setLoading(false);
+    }
   };
 
   return (
     <div className="w-screen h-screen p-5 max-w-[1000px] lg:mx-auto lg:flex lg:items-center lg:justify-between">
       {/* Auth Banner */}
-      <AuthBanner />
+      <AuthBanner type="signup" />
       {/* Form Title */}
       <div className="lg:mb-auto lg:mt-10">
         <h2 className="text-center font-bold text-2xl mb-4 lg:text-left">
@@ -43,7 +62,7 @@ export default function SignUp() {
         <p className="text-center lg:text-left">
           Already have a Ticketmaster account?{" "}
           <span className="font-bold text-blue-600">
-            <Link href="/signup">Sign In</Link>
+            <Link href="/signin">Sign In</Link>
           </span>{" "}
         </p>
 
@@ -212,9 +231,9 @@ export default function SignUp() {
           </p>
           <button
             type="submit"
-            className="ml-auto px-3 py-2 bg-blue-600 rounded text-white hover:bg-blue-700"
+            className="ml-auto bg-blue-600 rounded text-white h-10 w-[80px] flex justify-center items-center hover:bg-blue-700"
           >
-            Next
+            {!loading ? <div>Next</div> : <AuthLoading />}
           </button>
         </form>
       </div>

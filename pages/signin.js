@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import Link from "next/link";
 import signinValidation from "../YupValidationSchema/signinValidation";
 import { Controller, useForm } from "react-hook-form";
@@ -6,8 +7,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import template from "../utils/template";
 import AuthBanner from "../components/AuthBanner";
+import AuthLoading from "../components/AuthLoading";
 
 export default function SignIn() {
+  const [loading, setLoading] = useState(false);
+  const [authErrorMessage, setAuthErrorMessage] = useState("");
+
   // gère les erreur des notre formulaire
   const {
     control,
@@ -19,16 +24,27 @@ export default function SignIn() {
 
   // fonction qui envoit la data au backend
   const handleSignin = async (input) => {
+    setLoading(true);
     const req = await axios.post(`${template}api/signin`, {
       email: input.email,
       password: input.password,
     });
+
+    if (req.data.status === "Error") {
+      setLoading(false);
+      alert("something went wrong");
+    }
+
+    if (req.data.status === "Success") {
+      setLoading(false);
+      alert("connected");
+    }
   };
 
   return (
     <div className="w-screen h-screen p-5 max-w-[1000px] lg:mx-auto lg:flex lg:items-center lg:justify-between">
       {/* Auth Banner */}
-      <AuthBanner />
+      <AuthBanner type="signin" />
       {/* Form Title */}
       <div className="lg:mb-auto lg:mt-10">
         <h2 className="text-center font-bold text-2xl mb-4 lg:text-left">
@@ -115,9 +131,9 @@ export default function SignIn() {
           </p>
           <button
             type="submit"
-            className="ml-auto px-3 py-2 bg-blue-600 rounded text-white hover:bg-blue-700"
+            className="ml-auto h-10 w-[80px] bg-blue-600 rounded text-white flex justify-center items-center hover:bg-blue-700"
           >
-            Sign In
+            {!loading ? <div>Sign In</div> : <AuthLoading />}
           </button>
         </form>
       </div>

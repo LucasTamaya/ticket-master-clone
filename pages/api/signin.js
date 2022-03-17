@@ -25,6 +25,7 @@ export default async function handler(req, res) {
         // si l'utilisateur n'existe pas encore
         if (data.length === 0) {
           console.log("non existant");
+          return res.send({ status: "Error" });
         }
 
         // si l'utilisateur existe, on vérifie la validité de son mot de passe
@@ -41,7 +42,7 @@ export default async function handler(req, res) {
 
           // si aucune erreur avec le pwd
           if (isMatch) {
-            return res.status(200).send({ status: "Sucess" });
+            return res.status(200).send({ status: "Success" });
           }
         }
       }
