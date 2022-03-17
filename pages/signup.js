@@ -10,10 +10,12 @@ import AuthBanner from "../components/AuthBanner";
 import CountrySelection from "../components/CountrySelection";
 import { useRouter } from "next/router";
 import AuthLoading from "../components/AuthLoading";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function SignUp() {
   const [loading, setLoading] = useState(false);
   const [authErrorMessage, setAuthErrorMessage] = useState("");
+  const router = useRouter();
 
   // gère les erreur des notre formulaire
   const {
@@ -26,6 +28,7 @@ export default function SignUp() {
 
   // fonction qui envoit la data au backend
   const handleSignup = async (input) => {
+    setAuthErrorMessage("");
     // active l'animation de loading
     setLoading(true);
     const newUserData = {
@@ -39,7 +42,7 @@ export default function SignUp() {
     const req = await axios.post(`${template}api/signup`, newUserData);
 
     if (req.data.status === "Error") {
-      alert("something went wrong");
+      setAuthErrorMessage("This email already exists");
       // désactive l'animation de loading à la réception de l'erreur
       setLoading(false);
     }
@@ -47,6 +50,8 @@ export default function SignUp() {
     if (req.data.status === "Success") {
       // désactive l'animation de loading à la réception de la data
       setLoading(false);
+      // redirige l'utilisateur vers la page principale
+      router.push("/");
     }
   };
 
@@ -235,6 +240,15 @@ export default function SignUp() {
           >
             {!loading ? <div>Next</div> : <AuthLoading />}
           </button>
+          {authErrorMessage && (
+            <div className="bg-red-500 ml-auto mt-4 h-10 w-fit flex justify-center items-center gap-x-3 p-2 rounded">
+              <p className="text-white font-bold">{authErrorMessage}</p>
+              <CloseIcon
+                className="text-white cursor-pointer"
+                onClick={() => setAuthErrorMessage("")}
+              />
+            </div>
+          )}
         </form>
       </div>
     </div>

@@ -7,11 +7,7 @@ import { start, apiKey } from "../utils/urlsTemplate";
 
 const SearchBar = () => {
   const [location, setLocation] = useState("");
-  const [date, setDate] = useState("");
   const [keyword, setKeyword] = useState("");
-
-  //   const validDate = Date.parse("2022-05-01");
-  //   console.log(validDate);
 
   // va contenir le ou les paramètres
   let parameter;
@@ -25,12 +21,12 @@ const SearchBar = () => {
     }
 
     // si tous les inputs remplis
-    if (location !== "" && date !== "" && keyword !== "") {
+    if (location !== "" && keyword !== "") {
       alert("all inputs fulfilled");
     }
 
     // si input location remplie uniquement
-    if (!location !== "" && date === "" && keyword === "") {
+    if (!location !== "" && keyword === "") {
       // si la location est un nombre
       if (!isNaN(location)) {
         parameter = `postalCode=${location}`;
@@ -50,7 +46,7 @@ const SearchBar = () => {
       }
     }
     // si input keyword remplie uniquement
-    if (keyword !== "" && location === "" && date === "") {
+    if (keyword !== "" && location === "") {
       parameter = `keyword=${keyword}`;
     }
 
@@ -62,13 +58,13 @@ const SearchBar = () => {
       console.log(data);
     });
   };
-
+  // className="flex items-center border-none w-full max-w-[1000px] bg-white rounded mx-auto h-12"
   return (
     <form
-      className="flex items-center border-none w-full max-w-[1000px] bg-white rounded mx-auto"
+      className="mt-7 flex flex-col gap-y-3 mx-auto w-full max-w-[650px] lg:max-width-[1000px] lg:flex-row lg:items-center"
       onSubmit={handleSubmit}
     >
-      <div className="flex items-center h-12 border-r border-gray-900 p-3">
+      <div className="flex items-center h-full border-r border-gray-900 p-3 bg-white w-fit rounded lg:rounded-tr-none lg:rounded-br-none">
         <input
           type="text"
           placeholder="City or Zip Code"
@@ -77,28 +73,20 @@ const SearchBar = () => {
         />
         <LocationOnOutlinedIcon className="text-blue-600" />
       </div>
-      <div className="flex items-center h-12 border-r border-gray-900 p-3">
-        <input
-          type="text"
-          placeholder="All Dates"
-          className="outline-none border-none"
-          onChange={(e) => setDate(e.target.value)}
-        />
-        <KeyboardArrowDownIcon />
-      </div>
-      <div className="flex-1 flex items-center pr-1">
-        <div className="flex-1 flex items-center">
-          <SearchIcon className="mx-2" />
+
+      <div className="flex-1 flex items-center gap-x-3 w-full lg:bg-white rounded lg:rounded-tl-none lg:rounded-bl-none">
+        <div className="flex-1 flex items-center bg-white p-3 rounded">
           <input
             type="text"
             placeholder="Search for artists, venues and events"
             className="outline-none border-none flex-1"
             onChange={(e) => setKeyword(e.target.value)}
           />
+          <SearchIcon className=" text-blue-600" />
         </div>
         <button
           type="submit"
-          className="bg-blue-600 text-white rounded px-5 p-2"
+          className="bg-blue-600 text-white rounded px-5 p-3"
         >
           Search
         </button>

@@ -8,10 +8,13 @@ import axios from "axios";
 import template from "../utils/template";
 import AuthBanner from "../components/AuthBanner";
 import AuthLoading from "../components/AuthLoading";
+import CloseIcon from "@mui/icons-material/Close";
+import { useRouter } from "next/router";
 
 export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const [authErrorMessage, setAuthErrorMessage] = useState("");
+  const router = useRouter();
 
   // gère les erreur des notre formulaire
   const {
@@ -25,6 +28,7 @@ export default function SignIn() {
   // fonction qui envoit la data au backend
   const handleSignin = async (input) => {
     setLoading(true);
+    setAuthErrorMessage("");
     const req = await axios.post(`${template}api/signin`, {
       email: input.email,
       password: input.password,
@@ -32,12 +36,13 @@ export default function SignIn() {
 
     if (req.data.status === "Error") {
       setLoading(false);
-      alert("something went wrong");
+      setAuthErrorMessage("Email or password invalid");
     }
 
     if (req.data.status === "Success") {
       setLoading(false);
-      alert("connected");
+      // redirige l'utilisateur vers la page principale
+      router.push("/");
     }
   };
 
@@ -135,6 +140,15 @@ export default function SignIn() {
           >
             {!loading ? <div>Sign In</div> : <AuthLoading />}
           </button>
+          {authErrorMessage && (
+            <div className="bg-red-500 ml-auto mt-4 h-10 w-fit flex justify-center items-center gap-x-3 p-2 rounded">
+              <p className="text-white font-bold">{authErrorMessage}</p>
+              <CloseIcon
+                className="text-white cursor-pointer"
+                onClick={() => setAuthErrorMessage("")}
+              />
+            </div>
+          )}
         </form>
       </div>
     </div>
