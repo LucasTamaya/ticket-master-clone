@@ -12,8 +12,8 @@ const concertsData = [
     img: "/img/concerts/bad-bunny.jpg",
   },
   {
-    title: "Def Leopard",
-    img: "/img/concerts/def-leopard.jpg",
+    title: "Def Leppard",
+    img: "/img/concerts/def-leppard.jpg",
   },
   {
     title: "Elton John",

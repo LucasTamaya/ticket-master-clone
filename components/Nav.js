@@ -1,5 +1,4 @@
 import Link from "next/link";
-import MenuIcon from "@mui/icons-material/Menu";
 
 const Nav = () => {
   return (
@@ -8,23 +7,25 @@ const Nav = () => {
       {/* Nav left */}
       <ul className="flex items-center gap-x-10">
         <li>
-          <img
-            src="/ticketmaster.svg"
-            alt="logo ticket master"
-            className="filter-white"
-          />
+          <Link href="/">
+            <img
+              src="/ticketmaster.svg"
+              alt="logo ticket master"
+              className="filter-white cursor-pointer"
+            />
+          </Link>
         </li>
         <li className="cursor-pointer text-white font-bold hidden md:block">
-          Concerts
+          <Link href="/search/keyword=concerts">Concerts</Link>
         </li>
         <li className="cursor-pointer text-white font-bold hidden md:block">
-          Sports
+          <Link href="/search/keyword=sports">Sports</Link>
         </li>
         <li className="cursor-pointer text-white font-bold hidden md:block">
-          Arts &amp; Theater
+          <Link href="/search/keyword=arts & theater">Arts &amp; Theater</Link>
         </li>
         <li className="cursor-pointer text-white font-bold hidden md:block">
-          Family
+          <Link href="/search/keyword=family">Family</Link>
         </li>
         <li className="cursor-pointer text-white font-bold hidden md:block">
           More

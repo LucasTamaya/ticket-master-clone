@@ -5,7 +5,7 @@ const HomeCardEvent = ({ data }) => {
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-5 mb-12 cursor-pointer">
       {data?.map((x) => (
         // Lien vers la page de recherche de l'intitulé correspondant (ex: concerts, sports ...)
-        <Link href={`/search/${x.title.toLowerCase()}`}>
+        <Link key={x.title} href={`/search/keyword=${x.title.toLowerCase()}`}>
           <div
             style={{ backgroundImage: `url(${x.img})` }}
             className="w-full h-[150px] rounded flex items-end p-2 bg-cover bg-center"

@@ -4,61 +4,47 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import SearchIcon from "@mui/icons-material/Search";
 import { start, apiKey } from "../utils/urlsTemplate";
+import { useRouter } from "next/router";
+import getLocationType from "../utils/getLocationType";
 
 const SearchBar = () => {
   const [location, setLocation] = useState("");
   const [keyword, setKeyword] = useState("");
-
-  // va contenir le ou les paramètres
-  let parameter;
+  const router = useRouter();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // si input nécessaire vide
-    if (location === "" && keyword === "") {
+    // si input vide
+    if (!location && !keyword) {
       return;
     }
 
-    // si tous les inputs remplis
-    if (location !== "" && keyword !== "") {
-      alert("all inputs fulfilled");
+    // si les deux inputs sont remplis
+    if (location && keyword) {
+      // on récupère le type de location (ex: city/countryCode/postalCode)
+      const locationUrl = getLocationType(location);
+      console.log(locationUrl);
+
+      const keywordUrl = `keyword=${keyword}`;
+      console.log(keywordUrl);
+
+      router.push(`/search/${locationUrl}&${keywordUrl}`);
     }
 
-    // si input location remplie uniquement
-    if (!location !== "" && keyword === "") {
-      // si la location est un nombre
-      if (!isNaN(location)) {
-        parameter = `postalCode=${location}`;
-      }
-
-      // si la location est une string
-      if (isNaN(location)) {
-        // si la location à une longueur de 2, on utilise la parameter countryCode
-        if (location.length === 2) {
-          parameter = `countryCode=${location.toUpperCase()}`; //met tout en majuscule
-          //   sinon on utilise le parameter city
-        } else {
-          parameter = `city=${
-            location.charAt(0).toUpperCase() + location.slice(1).toLowerCase()
-          }`; //met la première lettre en majuscule et les autres en minuscules
-        }
-      }
-    }
-    // si input keyword remplie uniquement
-    if (keyword !== "" && location === "") {
-      parameter = `keyword=${keyword}`;
+    // si uniquement la location remplie
+    if (location && !keyword) {
+      const locationUrl = getLocationType(location);
+      router.push(`/search/${locationUrl}`);
     }
 
-    // crée l'url final
-    const url = `${start}${parameter}${apiKey}`;
-
-    // récupère la data avec un hook perso
-    useAxios(url).then((data) => {
-      console.log(data);
-    });
+    // si uniquement le keyword rempli
+    if (keyword && !location) {
+      const keywordUrl = `keyword=${keyword}`;
+      router.push(`/search/${keywordUrl}`);
+    }
   };
-  // className="flex items-center border-none w-full max-w-[1000px] bg-white rounded mx-auto h-12"
+
   return (
     <form
       className="mt-7 flex flex-col gap-y-3 mx-auto w-full max-w-[650px] lg:max-width-[1000px] lg:flex-row lg:items-center"
