@@ -1,7 +1,7 @@
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import { useState, useEffect } from "react";
 
-const EventDetails = ({ priceMin, priceMax, address, city }) => {
+const EventDetails = ({ date, priceMin, priceMax, address, city }) => {
   const [isPriceDefined, setIsPriceDefined] = useState(false);
 
   useEffect(() => {
@@ -15,8 +15,8 @@ const EventDetails = ({ priceMin, priceMax, address, city }) => {
   }, []);
 
   return (
-    <div className="flex justify-between items-center mt-2 p-4 border rounded border-gray-600">
-      <div className="flex-1 my-2">
+    <div className="flex justify-between items-start mt-2 p-4 border rounded border-gray-600">
+      <div className="flex-1 flex-col">
         <div>
           <h3 className="text-gray-600 text-sm uppercase md:text-base">
             Price range
@@ -31,7 +31,12 @@ const EventDetails = ({ priceMin, priceMax, address, city }) => {
             </div>
           )}
         </div>
+        <div className="flex-1 mt-2 md:hidden">
+          <h3 className="text-gray-600 text-sm uppercase">Date</h3>
+          <span className="text-sm text-fuchsia-600 font-bold">{date}</span>
+        </div>
       </div>
+
       <div className="flex-1 flex items-start gap-x-1">
         <MapOutlinedIcon className="text-gray-600" />
         <div>
