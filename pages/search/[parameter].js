@@ -79,7 +79,11 @@ const Parameter = ({ events, nbTotalElements, links }) => {
               date={x.dates.start.localDate}
               name={x.name}
               address={
-                x._embedded?.venues[0].address.line1 || x.place.address.line1
+                x._embedded?.venues[0].address
+                  ? x._embedded?.venues[0].address.line1
+                  : x.place
+                  ? x.place.address.line1
+                  : x._embedded?.venues[0].country.name
               }
               city={x._embedded?.venues[0].city.name || x.place.city.name}
               priceMin={x.priceRanges ? x.priceRanges[0].min : "Not Specified"}
@@ -111,7 +115,6 @@ export async function getServerSideProps(context) {
   const parameter = context.query.parameter;
 
   const url = `${start}${parameter}${apiKey}`;
-  console.log(url);
 
   let events;
   let nbTotalElements;
@@ -120,13 +123,11 @@ export async function getServerSideProps(context) {
   const req = await axios
     .get(url)
     .then((data) => {
-      console.log("pas d'erreur");
       events = data.data._embedded.events;
       nbTotalElements = data.data.page.totalElements;
       links = data.data._links;
     })
     .catch((err) => {
-      console.log("erreur");
       console.log(err);
       events = [];
       nbTotalElements = 0;

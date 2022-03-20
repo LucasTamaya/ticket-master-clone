@@ -24,10 +24,8 @@ const SearchBar = () => {
     if (location && keyword) {
       // on récupère le type de location (ex: city/countryCode/postalCode)
       const locationUrl = getLocationType(location);
-      console.log(locationUrl);
 
       const keywordUrl = `keyword=${keyword}`;
-      console.log(keywordUrl);
 
       router.push(`/search/${locationUrl}&${keywordUrl}`);
     }

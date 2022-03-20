@@ -1,4 +1,4 @@
-import styles from "../styles/AuthLoading.module.css"
+import styles from "../styles/AuthLoading.module.css";
 
 const AuthLoading = () => {
   return (

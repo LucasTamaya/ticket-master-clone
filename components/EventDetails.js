@@ -15,7 +15,7 @@ const EventDetails = ({ date, priceMin, priceMax, address, city }) => {
   }, []);
 
   return (
-    <div className="flex justify-between items-start mt-2 p-4 border rounded border-gray-600">
+    <div className="flex justify-between items-start mt-2 p-4 border rounded border-blue-600">
       <div className="flex-1 flex-col">
         <div>
           <h3 className="text-gray-600 text-sm uppercase md:text-base">
