@@ -1,6 +1,10 @@
 // fonction afin de récupérer l'index max dans l'url de l'api
 
 const getMaxIndex = (links) => {
+  if (!links) {
+    return;
+  }
+
   // récupère le dernier lien
   const lastLinks = links.last.href;
 

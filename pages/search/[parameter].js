@@ -17,7 +17,7 @@ const Parameter = ({ events, nbTotalElements, links }) => {
 
   useEffect(() => {
     setEventsData(events);
-    setMaxData(false)
+    setMaxData(false);
   }, [router]);
 
   // permet d'avancer dans l'index de l'api
@@ -61,7 +61,7 @@ const Parameter = ({ events, nbTotalElements, links }) => {
       <Header />
 
       {nbTotalElements === 0 && (
-        <h2 className="text-blue-600 text-xl text-center font-bold my-4">
+        <h2 className="text-blue-600 text-2xl md:text-4xl text-center font-bold my-4">
           We found 0 events
         </h2>
       )}
@@ -86,19 +86,19 @@ const Parameter = ({ events, nbTotalElements, links }) => {
               priceMax={x.priceRanges ? x.priceRanges[0].max : "Not Specified"}
             />
           ))}
+          {!maxData && (
+            <div className="flex justify-center items-center">
+              <button
+                className="border border-blue-600 text-blue-600 rounded px-3 py-2 transition ease-out hover:text-white mb-4 hover:bg-blue-600"
+                onClick={() => loadMoreData()}
+              >
+                Load More
+              </button>
+            </div>
+          )}
         </div>
       ) : (
         <></>
-      )}
-      {!maxData && (
-        <div className="flex justify-center items-center">
-          <button
-            className="border border-blue-600 text-blue-600 rounded px-3 py-2 transition ease-out hover:text-white mb-4 hover:bg-blue-600"
-            onClick={() => loadMoreData()}
-          >
-            Load More
-          </button>
-        </div>
       )}
       <Footer />
     </div>
@@ -126,7 +126,7 @@ export async function getServerSideProps(context) {
       links = data.data._links;
     })
     .catch((err) => {
-      console.log("erreur")
+      console.log("erreur");
       console.log(err);
       events = [];
       nbTotalElements = 0;
